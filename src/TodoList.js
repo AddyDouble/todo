@@ -5,6 +5,7 @@ const TodoList = (() => {
 
     const init = () => {
         addProject("Default");
+        projects[0].addTask("Task1");
     };
 
     const findProject = (projectName) =>{
@@ -24,11 +25,19 @@ const TodoList = (() => {
 
     const getProjects = () => {return projects};
 
+    const getProject = (projectName) => {
+        let i = 0;
+        for(; i < projects.length; i++)
+            if(projects[i].name === projectName)
+                return projects[i];
+    };
+
     return {
         init, 
         addProject, 
         deleteProject, 
         getProjects,
+        getProject,
     };
 })();
 

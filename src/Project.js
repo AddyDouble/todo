@@ -13,7 +13,7 @@ const projectFactory = (name = 'none') =>{
     }
 
     const addTask = (name) => {
-        if(!findTask(name)) return;
+        if(findTask(name)) return;
         tasks.push(taskFactory(name));
     }
 

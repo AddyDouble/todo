@@ -1,4 +1,2 @@
-import { TodoList } from "./TodoList";
-
-TodoList.init();
-let arr = TodoList.getProjects();
+import { UI } from "./UI";
+UI.init();
