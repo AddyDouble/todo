@@ -6,6 +6,7 @@ const UI = (() => {
     const projectTitle = document.querySelector(".project-title");
     const init = () => {
         TodoList.init();
+        setTaskForm();
         listProjects();
         listTasks();
     }
@@ -20,6 +21,35 @@ const UI = (() => {
         let li = document.createElement("li");
         li.innerText = name;
         return li;
+    };
+
+    const onTaskSubmit = () =>{
+        const taskTitle = document.querySelector('#taskTitle').value;
+        const project = TodoList.getProject(projectTitle.innerText);
+        project.addTask(taskTitle);
+        listTasks();
+    }
+
+    const setTaskForm = () =>{
+        const initTask = document.querySelector("#initTask");
+        const modal = document.querySelector(".modal");
+        initTask.addEventListener('click', () =>{
+            modal.style.display = "block";
+        });
+
+        window.onclick = (e) =>{
+            if(e.target == modal){
+                modal.style.display = "none";
+            }
+        };
+
+        const submitTask = document.querySelector(".task-form");
+        submitTask.addEventListener('submit', (e) => {
+            e.preventDefault();
+            //insert function to check form
+            onTaskSubmit();
+            modal.style.display = "none";
+        });
     };
     const listProjects = () => {
         projectList.innerHTML = '';
