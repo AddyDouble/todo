@@ -66,3 +66,21 @@ footer{
     height: 40px;
     text-align: center;
 }
+
+.project-tasks li {
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
+}
+
+.task-info{
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+}
+
+.task-delete-btn{
+    width: 15px;
+    height: 15px;
+}
