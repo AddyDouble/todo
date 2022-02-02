@@ -1,9 +1,9 @@
 import { TodoList } from "./TodoList";
 
 const UI = (() => {
-    const projectTasks = document.querySelector(".project-tasks");
+    const projectTasks = document.querySelector(".js-project-tasks");
     const projectList = document.querySelector(".project-list");
-    const projectTitle = document.querySelector(".project-title");
+    const projectTitle = document.querySelector(".js-project-title");
 
     const init = () => {
         TodoList.init();
@@ -13,8 +13,8 @@ const UI = (() => {
         setProjectForm();
     };
     const setProjectForm = () => {
-        const initProject = document.querySelector("#initProject");
-        const projectForm = document.querySelector(".projectForm");
+        const initProject = document.querySelector("#js-init-project");
+        const projectForm = document.querySelector(".js-project-form");
         initProject.style.display = "block";
         projectForm.style.display = "none";
 
@@ -23,15 +23,16 @@ const UI = (() => {
             projectForm.style.display = "flex";
         });
 
-        const cancelBtn = document.querySelector("#projectFormCancel");
+        const cancelBtn = document.querySelector("#js-project-form-cancel");
         cancelBtn.addEventListener('click', () => {
+            clearProjectForm();
             initProject.style.display = "block";
             projectForm.style.display = "none";
         });
 
-        const confirmBtn = document.querySelector("#projectFormConfirm");
+        const confirmBtn = document.querySelector("#js-project-form-confirm");
         confirmBtn.addEventListener('click', () => {
-            const pTitle = document.querySelector("#projectFormTitle");
+            const pTitle = document.querySelector("#js-project-form-title");
             if(pTitle.value.trim() !== ""){
                 onProjectSubmit();
                 initProject.style.display = "block";
@@ -42,13 +43,13 @@ const UI = (() => {
     const createProjectItem = (name) => {
         let li = document.createElement("li");
         let title = document.createElement("span");
-        title.classList.add("projectItemTitle");
+        title.classList.add("js-project-item-title");
         title.innerText = name;
         li.appendChild(title);
 
         if(name !== "Default"){
             let del = document.createElement("button");
-            del.classList.add('projectDeleteBtn');
+            del.classList.add('js-project-delete-button');
             del.addEventListener('click', (e) => {removeProjectItem(e)});
             del.innerText = "Del";
             li.appendChild(del);
@@ -57,18 +58,18 @@ const UI = (() => {
     };
 
     const removeProjectItem = (e) =>{
-        let projectTitle = e.target.parentElement.querySelector(".projectItemTitle").innerText;
+        let projectTitle = e.target.parentElement.querySelector(".js-project-item-title").innerText;
         TodoList.deleteProject(projectTitle);
         listProjects();
     };
 
     const clearProjectForm = () =>{
-        const pTitle = document.querySelector("#projectFormTitle");
+        const pTitle = document.querySelector("#js-project-form-title");
         pTitle.value = "";
     };
 
     const onProjectSubmit = () =>{
-        const pTitle = document.querySelector("#projectFormTitle");
+        const pTitle = document.querySelector("#js-project-form-title");
         if(TodoList.getProject(pTitle.value) === null)
             TodoList.addProject(pTitle.value);
         clearProjectForm();
@@ -87,11 +88,11 @@ const UI = (() => {
         let li = document.createElement("li");
         
         let info = document.createElement("div");
-        info.classList.add("task-info");
+        info.classList.add("js-task-info");
         let title = document.createElement("span");
         let date = document.createElement("span");
 
-        title.classList.add("task-title");
+        title.classList.add("js-task-title");
 
         title.innerText = name;
         if(dt.trim() !== "")
@@ -104,21 +105,21 @@ const UI = (() => {
         li.appendChild(info);
 
         let del = document.createElement("button");
-        del.classList.add("taskDeleteBtn");
+        del.classList.add("js-task-delete-button");
         del.addEventListener('click', (e) => {removeTaskItem(e)});
         li.appendChild(del);
         return li;
     };
 
     const removeTaskItem = (e) => {
-        let taskTitle = e.target.parentElement.querySelector(".task-title").innerText;
+        let taskTitle = e.target.parentElement.querySelector(".js-task-title").innerText;
         const project = TodoList.getProject(projectTitle.innerText);
         project.removeTask(taskTitle);
         listTasks();
     };
     
     const validateTaskForm = () => {
-        const taskTitle = document.querySelector("#taskFormTitle");
+        const taskTitle = document.querySelector("#js-task-form-title");
 
         if(taskTitle.value.trim() === ""){
             alert("Task title is required");
@@ -128,15 +129,15 @@ const UI = (() => {
     };
 
     const onTaskSubmit = () =>{
-        let taskFormTitle = document.querySelector('#taskFormTitle').value;
-        let taskFormDate = document.querySelector("#taskFormDate").value;
+        let taskFormTitle = document.querySelector('#js-task-form-title').value;
+        let taskFormDate = document.querySelector("#js-task-form-date").value;
         const project = TodoList.getProject(projectTitle.innerText);
         project.addTask(taskFormTitle, taskFormDate);
         listTasks();
     };
 
     const setTaskForm = () =>{
-        const initTask = document.querySelector("#initTask");
+        const initTask = document.querySelector("#js-init-task");
         const modal = document.querySelector(".modal");
         initTask.addEventListener('click', () =>{
             modal.style.display = "block";
@@ -149,7 +150,7 @@ const UI = (() => {
             }
         };
 
-        const submitTask = document.querySelector(".task-form");
+        const submitTask = document.querySelector(".js-task-form");
         submitTask.addEventListener('submit', (e) => {
             e.preventDefault();
             if(validateTaskForm()){
@@ -161,8 +162,8 @@ const UI = (() => {
     };
 
     const clearTaskForm = () =>{
-        const taskFormTitle = document.querySelector('#taskFormTitle');
-        const taskFormDate = document.querySelector("#taskFormDate");
+        const taskFormTitle = document.querySelector('#js-task-form-title');
+        const taskFormDate = document.querySelector("#js-task-form-date");
         taskFormTitle.value = "";
         taskFormDate.value = "";
     };
