@@ -80,7 +80,12 @@ footer{
     justify-content: space-between;
 }
 
-.task-delete-btn{
+.taskDeleteBtn{
     width: 15px;
     height: 15px;
+}
+
+.projectForm{
+    display: none;
+    flex-direction: column;
 }

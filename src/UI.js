@@ -10,12 +10,69 @@ const UI = (() => {
         setTaskForm();
         listProjects();
         listTasks();
+        setProjectForm();
     };
-    
+    const setProjectForm = () => {
+        const initProject = document.querySelector("#initProject");
+        const projectForm = document.querySelector(".projectForm");
+        initProject.style.display = "block";
+        projectForm.style.display = "none";
+
+        initProject.addEventListener('click', () => {
+            initProject.style.display = "none";
+            projectForm.style.display = "flex";
+        });
+
+        const cancelBtn = document.querySelector("#projectFormCancel");
+        cancelBtn.addEventListener('click', () => {
+            initProject.style.display = "block";
+            projectForm.style.display = "none";
+        });
+
+        const confirmBtn = document.querySelector("#projectFormConfirm");
+        confirmBtn.addEventListener('click', () => {
+            const pTitle = document.querySelector("#projectFormTitle");
+            if(pTitle.value.trim() !== ""){
+                onProjectSubmit();
+                initProject.style.display = "block";
+                projectForm.style.display = "none";
+            }
+        });
+    };
     const createProjectItem = (name) => {
         let li = document.createElement("li");
-        li.innerText = name;
+        let title = document.createElement("span");
+        title.classList.add("projectItemTitle");
+        title.innerText = name;
+        li.appendChild(title);
+
+        if(name !== "Default"){
+            let del = document.createElement("button");
+            del.classList.add('projectDeleteBtn');
+            del.addEventListener('click', (e) => {removeProjectItem(e)});
+            del.innerText = "Del";
+            li.appendChild(del);
+        }
         return li;
+    };
+
+    const removeProjectItem = (e) =>{
+        let projectTitle = e.target.parentElement.querySelector(".projectItemTitle").innerText;
+        TodoList.deleteProject(projectTitle);
+        listProjects();
+    };
+
+    const clearProjectForm = () =>{
+        const pTitle = document.querySelector("#projectFormTitle");
+        pTitle.value = "";
+    };
+
+    const onProjectSubmit = () =>{
+        const pTitle = document.querySelector("#projectFormTitle");
+        if(TodoList.getProject(pTitle.value) === null)
+            TodoList.addProject(pTitle.value);
+        clearProjectForm();
+        listProjects();
     };
 
     const listProjects = () => {
@@ -47,7 +104,7 @@ const UI = (() => {
         li.appendChild(info);
 
         let del = document.createElement("button");
-        del.classList.add("task-delete-btn");
+        del.classList.add("taskDeleteBtn");
         del.addEventListener('click', (e) => {removeTaskItem(e)});
         li.appendChild(del);
         return li;
@@ -62,7 +119,6 @@ const UI = (() => {
     
     const validateTaskForm = () => {
         const taskTitle = document.querySelector("#taskFormTitle");
-        const taskDate = document.querySelector("#taskFormDate").value;
 
         if(taskTitle.value.trim() === ""){
             alert("Task title is required");

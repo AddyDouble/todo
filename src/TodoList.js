@@ -8,7 +8,7 @@ const TodoList = (() => {
     };
 
     const findProject = (projectName) =>{
-        projects.some((el) => el.name === projectName);
+        return projects.some((el) => el.name === projectName);
     };
 
     const addProject = (projectName) =>{
@@ -18,7 +18,6 @@ const TodoList = (() => {
 
     const deleteProject = (projectName) => {
         if(!findProject(projectName)) return;
-
         projects = projects.filter((el) => el.name !== projectName);
     };
 
@@ -28,6 +27,8 @@ const TodoList = (() => {
         for(let i = 0 ; i < projects.length; i++)
             if(projects[i].name === projectName)
                 return projects[i];
+        
+        return null;
     };
 
     return {
