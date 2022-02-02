@@ -50,7 +50,7 @@ main{
     background-color: rgba(0,0,0,0.4);
 }
 
-.task-form{
+.js-task-form{
     background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
@@ -58,7 +58,7 @@ main{
     width: 80%;
 }
 
-.project-tasks{
+.js-project-tasks{
     list-style: none;
 }
 
@@ -67,25 +67,25 @@ footer{
     text-align: center;
 }
 
-.project-tasks li {
+.js-project-tasks li {
     width: 200px;
     display: flex;
     justify-content: space-between;
     border: 1px solid black;
 }
 
-.task-info{
+.js-task-info{
     flex: 1;
     display: flex;
     justify-content: space-between;
 }
 
-.taskDeleteBtn{
+.js-task-delete-button{
     width: 15px;
     height: 15px;
 }
 
-.projectForm{
+.js-project-form{
     display: none;
     flex-direction: column;
 }
