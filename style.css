@@ -6,19 +6,22 @@
 body{
     display: flex;
     flex-direction: column;
+    background-color: #EEEEEE;
     height: 100vh;
 }
 
-header, main, .sidebar, footer{
-    border: 1px solid black;
-}
 
+/*Header*/
 header{
-    text-align: center;
+    background-color: #333333;
+    height: 80px;
+    width: 100%;
 }
 
 header h1{
-    font-size: 50px;
+    font-size: 60px;
+    padding-left: 5px;
+    color: #EEEEEE;
 }
 
 main{
@@ -26,15 +29,73 @@ main{
     flex: 1;
 }
 
-.sidebar{
-    width: 150px;
+.add-button{
+    background: url("images/add.png") no-repeat;
+    background-position: 0 0;
+    border: none;
+    width: 24px;
+    height: 24px;
 }
 
+/*Sidebar*/
+.sidebar{
+    width: 300px;
+    min-width: 250px;
+    background-color: #DDDDDD;
+    padding-left: 10px;
+}
+
+/*project list*/
+.js-project-list li{
+    font-size: 24px;
+    color: #333333;
+    display: flex;
+    align-items: center;
+}
+
+.js-project-delete-button, .js-task-delete-button{
+    background: url("images/delete.png") no-repeat;
+    background-position: 0 0;
+    border: none;
+    width: 16px;
+    height: 16px;
+}
+
+.js-project-delete-button{
+    margin-right: 20px;
+    margin-left: auto;
+}
+
+/*project form*/
+.js-project-form{
+    display: none;
+    flex-direction: column;
+    flex: auto;
+}
+
+.project-form-button{
+    width: 16px;
+    height: 16px;
+    border: 1px solid black;
+}
+
+#js-project-form-confirm{
+    background: url("images/confirm.png") no-repeat;
+    background-position: 0 0;
+    border: none;
+}
+
+#js-project-form-cancel{
+    background: url("images/cancel.png") no-repeat;
+    background-position: 0 0;
+    border: none;
+}
+/*Task form*/
 .project-body{
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding-left: 100px;
 }
 
 .modal{
@@ -55,23 +116,26 @@ main{
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
 }
-
+/*Task Item*/
 .js-project-tasks{
     list-style: none;
 }
 
-footer{
-    height: 40px;
-    text-align: center;
-}
-
 .js-project-tasks li {
-    width: 200px;
+    width: 450px;
+    min-width: 300px;
+    margin-top: 5px;
     display: flex;
     justify-content: space-between;
-    border: 1px solid black;
+    align-items: center;
+    padding: 5px;
+    font-size: 20px;
+    color: #333333;
+    border-radius: 0.3em;
 }
 
 .js-task-info{
@@ -80,12 +144,22 @@ footer{
     justify-content: space-between;
 }
 
-.js-task-delete-button{
-    width: 15px;
-    height: 15px;
+.js-task-date{
+    margin: 0 5px;
 }
 
-.js-project-form{
-    display: none;
-    flex-direction: column;
+.task-checked{
+    background-color: #BBBBBB;
+    text-decoration: line-through;
+}
+.project-selected{
+    background-color: #BBBBBB;
+}
+
+footer{
+    height: 40px;
+    text-align: center;
+    background-color: #333333;
+    color: #EEEEEE;
+    width: 100%;
 }
