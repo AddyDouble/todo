@@ -1,5 +1,5 @@
-const taskFactory = (title, date) =>{
-    return {title, date};
+const taskFactory = (title, date, checked) =>{
+    return {title, date, checked};
 };
 
 export {taskFactory};

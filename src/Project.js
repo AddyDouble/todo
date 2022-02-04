@@ -18,12 +18,23 @@ const projectFactory = (name) =>{
         tasks.splice(getTaskIndex(taskName), 1);
     }
 
-    const addTask = (name, date) => {
+    const addTask = (name, date, checked) => {
         if(findTask(name)) return;
-        tasks.push(taskFactory(name, date));
+        tasks.push(taskFactory(name, date, checked));
     }
 
-    return {name, tasks, addTask, removeTask};
+    const editTask = (oldName, name, date, checked) =>{
+        if(!findTask(oldName)) return;
+        let i = getTaskIndex(oldName);
+        if(name != null)
+            tasks[i].title = name;
+        if(date != null)
+            tasks[i].date = date;
+        if(checked != null)
+            tasks[i].checked = checked;
+    }
+
+    return {name, tasks, addTask, removeTask, editTask};
 };
 
 export {projectFactory};

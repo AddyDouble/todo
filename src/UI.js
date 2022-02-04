@@ -2,10 +2,12 @@ import { TodoList } from "./TodoList";
 
 const UI = (() => {
     const projectTasks = document.querySelector(".js-project-tasks");
-    const projectList = document.querySelector(".project-list");
+    const projectList = document.querySelector(".js-project-list");
     const projectTitle = document.querySelector(".js-project-title");
+    let selectedProject;
 
     const init = () => {
+        selectedProject = "Default";
         TodoList.init();
         setTaskForm();
         listProjects();
@@ -51,15 +53,46 @@ const UI = (() => {
             let del = document.createElement("button");
             del.classList.add('js-project-delete-button');
             del.addEventListener('click', (e) => {removeProjectItem(e)});
-            del.innerText = "Del";
+            del.style.display = "none";
+            li.addEventListener('mouseenter', (e) => {
+                e.currentTarget.querySelector(".js-project-delete-button").style.display = "block";
+            });
+            li.addEventListener('mouseleave', (e) => {
+                e.currentTarget.querySelector(".js-project-delete-button").style.display = "none";
+            });
             li.appendChild(del);
         }
+        li.addEventListener('click', (e) =>{
+            changeProjectSelection(e);
+        });
+        if(name === selectedProject)
+            li.classList.add("project-selected");
         return li;
     };
 
+    const changeProjectSelection = (e) =>{
+        if(e.target.nodeName === "BUTTON")
+                return;
+        let pTitle = e.currentTarget.querySelector(".js-project-item-title").innerText;
+        if(pTitle === selectedProject)
+            return;
+        
+        selectedProject = pTitle;
+        projectTitle.innerText = pTitle;
+        document.querySelector("#js-init-task").style.display = "block";
+        listProjects();
+        listTasks();
+    };
+
     const removeProjectItem = (e) =>{
-        let projectTitle = e.target.parentElement.querySelector(".js-project-item-title").innerText;
-        TodoList.deleteProject(projectTitle);
+        let pTitle = e.target.parentElement.querySelector(".js-project-item-title").innerText;
+        TodoList.deleteProject(pTitle);
+        if(pTitle === selectedProject){
+            projectTitle.innerText = "";
+            selectedProject = "";
+            document.querySelector("#js-init-task").style.display = "none";
+            listTasks();
+        }
         listProjects();
     };
 
@@ -84,21 +117,22 @@ const UI = (() => {
         }
     };
 
-    const createTaskItem = (name, dt) => {
+    const createTaskItem = (name, dt, checked) => {
         let li = document.createElement("li");
         
         let info = document.createElement("div");
         info.classList.add("js-task-info");
         let title = document.createElement("span");
         let date = document.createElement("span");
-
+        
         title.classList.add("js-task-title");
-
+        date.classList.add("js-task-date");
         title.innerText = name;
+        date.innerText = "Date: ";
         if(dt.trim() !== "")
-            date.innerText = dt;
+            date.innerText += dt;
         else
-            date.innerText = "None";
+            date.innerText += "None";
 
         info.appendChild(title);
         info.appendChild(date);
@@ -107,13 +141,35 @@ const UI = (() => {
         let del = document.createElement("button");
         del.classList.add("js-task-delete-button");
         del.addEventListener('click', (e) => {removeTaskItem(e)});
+        del.style.display = "none";
         li.appendChild(del);
+
+        li.addEventListener('click', (e) => {
+            changeTaskCheck(e);
+        });
+        li.addEventListener('mouseenter', (e) => {
+            e.currentTarget.querySelector(".js-task-delete-button").style.display = "block";
+        });
+        li.addEventListener('mouseleave', (e) => {
+            e.currentTarget.querySelector(".js-task-delete-button").style.display = "none";
+        });
+
+        if(checked)
+            li.classList.add("task-checked");
         return li;
+    };
+
+    const changeTaskCheck = (e) =>{
+        if(e.target.nodeName === "BUTTON")
+                return;
+        let check = e.currentTarget.classList.toggle("task-checked");
+        let currTitle = e.currentTarget.querySelector(".js-task-title").innerText;
+        TodoList.getProject(selectedProject).editTask(currTitle, null, null, check);
     };
 
     const removeTaskItem = (e) => {
         let taskTitle = e.target.parentElement.querySelector(".js-task-title").innerText;
-        const project = TodoList.getProject(projectTitle.innerText);
+        const project = TodoList.getProject(selectedProject);
         project.removeTask(taskTitle);
         listTasks();
     };
@@ -131,8 +187,8 @@ const UI = (() => {
     const onTaskSubmit = () =>{
         let taskFormTitle = document.querySelector('#js-task-form-title').value;
         let taskFormDate = document.querySelector("#js-task-form-date").value;
-        const project = TodoList.getProject(projectTitle.innerText);
-        project.addTask(taskFormTitle, taskFormDate);
+        const project = TodoList.getProject(selectedProject);
+        project.addTask(taskFormTitle, taskFormDate, false);
         listTasks();
     };
 
@@ -170,9 +226,11 @@ const UI = (() => {
 
     const listTasks = () => {
         projectTasks.innerHTML = "";
-        let tasks = TodoList.getProject(projectTitle.innerText).tasks;
+        if(selectedProject === "")
+            return;
+        let tasks = TodoList.getProject(selectedProject).tasks;
         for(let i = 0; i < tasks.length; i++){
-            projectTasks.appendChild(createTaskItem(tasks[i].title, tasks[i].date));
+            projectTasks.appendChild(createTaskItem(tasks[i].title, tasks[i].date, tasks[i].checked));
         }
     };
 
