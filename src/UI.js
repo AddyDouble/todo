@@ -20,6 +20,9 @@ const UI = (() => {
     const initializeTodo = () =>{
         TodoList.init();
         let data = Storage.loadData();
+        if(data === null)
+            return;
+            
         for(let project of data){
             TodoList.addProject(project.name);
             let tasks = project.tasks;

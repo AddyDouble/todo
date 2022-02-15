@@ -32,12 +32,9 @@ const Storage = ( () => {
     
     const loadData = () => {
         if(!storageAvailable('localStorage') || !localStorage.getItem('todoList'))
-            return;
+            return null;
 
         return JSON.parse(localStorage.getItem('todoList'));
-    };
-    const loadTasks = (projectName) => {
-        
     };
     return{
         saveData,
