@@ -1,4 +1,5 @@
 import { taskFactory } from "./Task";
+import { Storage } from "./Storage";
 
 const projectFactory = (name) =>{
     let tasks = [];

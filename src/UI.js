@@ -1,4 +1,5 @@
 import { TodoList } from "./TodoList";
+import { Storage } from "./Storage";
 
 const UI = (() => {
     const projectTasks = document.querySelector(".js-project-tasks");
@@ -8,12 +9,25 @@ const UI = (() => {
 
     const init = () => {
         selectedProject = "Default";
-        TodoList.init();
+        initializeTodo();
         setListButton();
         setTaskForm();
         listProjects();
         listTasks();
         setProjectForm();
+    };
+
+    const initializeTodo = () =>{
+        TodoList.init();
+        let data = Storage.loadData();
+        for(let project of data){
+            TodoList.addProject(project.name);
+            let tasks = project.tasks;
+            let p = TodoList.getProject(project.name);
+            for(let task of tasks){
+                p.addTask(task.title, task.date, task.checked);
+            }
+        }
     };
 
     const setListButton = () => {
@@ -104,6 +118,7 @@ const UI = (() => {
     const removeProjectItem = (e) =>{
         let pTitle = e.target.parentElement.querySelector(".js-project-item-title").innerText;
         TodoList.deleteProject(pTitle);
+        Storage.saveData(TodoList.getProjects());
         if(pTitle === selectedProject){
             projectTitle.innerText = "";
             selectedProject = "";
@@ -120,8 +135,10 @@ const UI = (() => {
 
     const onProjectSubmit = () =>{
         const pTitle = document.querySelector("#js-project-form-title");
-        if(TodoList.getProject(pTitle.value) === null)
+        if(TodoList.getProject(pTitle.value) === null){
             TodoList.addProject(pTitle.value);
+            Storage.saveData(TodoList.getProjects());
+        }
         clearProjectForm();
         listProjects();
     };
@@ -181,12 +198,14 @@ const UI = (() => {
         let check = e.currentTarget.classList.toggle("task-checked");
         let currTitle = e.currentTarget.querySelector(".js-task-title").innerText;
         TodoList.getProject(selectedProject).editTask(currTitle, null, null, check);
+        Storage.saveData(TodoList.getProjects());
     };
 
     const removeTaskItem = (e) => {
         let taskTitle = e.target.parentElement.querySelector(".js-task-title").innerText;
         const project = TodoList.getProject(selectedProject);
         project.removeTask(taskTitle);
+        Storage.saveData(TodoList.getProjects());
         listTasks();
     };
     
@@ -205,6 +224,7 @@ const UI = (() => {
         let taskFormDate = document.querySelector("#js-task-form-date").value;
         const project = TodoList.getProject(selectedProject);
         project.addTask(taskFormTitle, taskFormDate, false);
+        Storage.saveData(TodoList.getProjects());
         listTasks();
     };
 
