@@ -9,10 +9,27 @@ const UI = (() => {
     const init = () => {
         selectedProject = "Default";
         TodoList.init();
+        setListButton();
         setTaskForm();
         listProjects();
         listTasks();
         setProjectForm();
+    };
+
+    const setListButton = () => {
+        const listBtn = document.querySelector("#js-project-list-button");
+        const sidebar = document.querySelector('.sidebar');
+        const projectBody = document.querySelector('.project-body');
+        listBtn.addEventListener('click', () => {
+            if(sidebar.style.display === "none"){
+                sidebar.style.display = "block";
+                projectBody.style.display = "none";
+            }
+            else{
+                sidebar.style.display = "none";
+                projectBody.style.display = "flex";
+            }
+        });
     };
     const setProjectForm = () => {
         const initProject = document.querySelector("#js-init-project");
@@ -119,7 +136,6 @@ const UI = (() => {
 
     const createTaskItem = (name, dt, checked) => {
         let li = document.createElement("li");
-        
         let info = document.createElement("div");
         info.classList.add("js-task-info");
         let title = document.createElement("span");
